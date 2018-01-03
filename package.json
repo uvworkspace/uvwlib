@@ -1,0 +1,9 @@
+{
+  "name": "uvwlib",
+  "version": "0.0.1",
+  "description": "Some javascript utils",
+  "main": "index.js",
+  "repository": "https://github.com/uvworkspace/uvwlib",
+  "author": "uvworkspace <uvw@mytraces.net>",
+  "license": "MIT"
+}
