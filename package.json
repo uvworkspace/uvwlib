@@ -1,6 +1,6 @@
 {
   "name": "uvwlib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Some javascript utils",
   "main": "index.js",
   "repository": "https://github.com/uvworkspace/uvwlib",
