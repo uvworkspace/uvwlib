@@ -12,6 +12,23 @@ var ui = {
     }
   },
 
+  closest: function (elem, selector) {
+    if (typeof elem.closest === 'function') {
+      return elem.closest(selector)
+    }
+
+    var matchesSelector = elem.matches || elem.webkitMatchesSelector ||
+      elem.mozMatchesSelector || elem.msMatchesSelector
+    while (elem) {
+      if (matchesSelector.call(elem, selector)) {
+        return elem
+      } else {
+        elem = elem.parentElement
+      }
+    }
+    return null
+  },
+
   // REF: http://ryanmorr.com/abstract-away-the-performance-faults-of-queryselectorall/
   find: function (elem, selector) {
     if (arguments.length < 2) {
@@ -36,6 +53,10 @@ var ui = {
     }
 
     return slice.call(elem.querySelectorAll(selector))
+  },
+
+  first: function () {
+    return ui.find.apply(null, arguments)[0]
   }
 }
 
