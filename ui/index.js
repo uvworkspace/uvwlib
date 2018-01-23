@@ -1,6 +1,7 @@
-'use strict'
+'use strict';
 
-var utils = require('../lib/utils')
+var utils = require('../lib/utils');
 
 module.exports = utils.assign({},
-  require('./dom'))
+  require('./dom'),
+  require('./asset-loader'));

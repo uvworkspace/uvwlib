@@ -1,63 +1,63 @@
-'use strict'
+'use strict';
 
-var slice = Array.prototype.slice
+var slice = Array.prototype.slice;
 
 var ui = {
   // REF: https://github.com/nefe/You-Dont-Need-jQuery
   ready: function (fn) {
     if (document.readyState === 'complete' || document.readyState !== 'loading') {
-      fn()
+      fn();
     } else {
-      document.addEventListener('DOMContentLoaded', fn)
+      document.addEventListener('DOMContentLoaded', fn);
     }
   },
 
   closest: function (elem, selector) {
     if (typeof elem.closest === 'function') {
-      return elem.closest(selector)
+      return elem.closest(selector);
     }
 
     var matchesSelector = elem.matches || elem.webkitMatchesSelector ||
-      elem.mozMatchesSelector || elem.msMatchesSelector
+      elem.mozMatchesSelector || elem.msMatchesSelector;
     while (elem) {
       if (matchesSelector.call(elem, selector)) {
-        return elem
+        return elem;
       } else {
-        elem = elem.parentElement
+        elem = elem.parentElement;
       }
     }
-    return null
+    return null;
   },
 
   // REF: http://ryanmorr.com/abstract-away-the-performance-faults-of-queryselectorall/
   find: function (elem, selector) {
     if (arguments.length < 2) {
-      selector = elem
-      elem = document
+      selector = elem;
+      elem = document;
     } else {
-      elem = typeof elem === 'string' ? ui.find(elem)[0] : (elem || document)
-      if (!elem) return []
+      elem = typeof elem === 'string' ? ui.find(elem)[0] : (elem || document);
+      if (!elem) return [];
     }
 
     if (/^(#?[\w-]+|\.[\w-.]+)$/.test(selector)) {
       switch (selector.charAt(0)) {
         case '#':
-          var found = document.getElementById(selector.substr(1))
-          return found ? [found] : []
+          var found = document.getElementById(selector.substr(1));
+          return found ? [found] : [];
         case '.':
-          var classes = selector.substr(1).replace(/\./g, ' ')
-          return slice.call(elem.getElementsByClassName(classes))
+          var classes = selector.substr(1).replace(/\./g, ' ');
+          return slice.call(elem.getElementsByClassName(classes));
         default:
-          return slice.call(elem.getElementsByTagName(selector))
+          return slice.call(elem.getElementsByTagName(selector));
       }
     }
 
-    return slice.call(elem.querySelectorAll(selector))
+    return slice.call(elem.querySelectorAll(selector));
   },
 
   first: function () {
-    return ui.find.apply(null, arguments)[0]
+    return ui.find.apply(null, arguments)[0];
   }
-}
+};
 
-module.exports = ui
+module.exports = ui;
