@@ -1,9 +1,19 @@
 {
   "name": "uvwlib",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Some javascript utils",
   "main": "index.js",
   "repository": "https://github.com/uvworkspace/uvwlib",
   "author": "uvworkspace <uvw@mytraces.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "tap test/*.test.js"
+  },
+  "devDependencies": {
+    "tap": "^11.1.0"
+  },
+  "dependencies": {
+    "js-yaml": "^3.10.0",
+    "strscan": "^1.0.1"
+  }
 }
