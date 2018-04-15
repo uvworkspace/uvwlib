@@ -2,33 +2,51 @@
 
 var test = require('tap').test;
 
+var utils = require('../lib/utils');
 var Scanner = require('../lib/scanner');
 
 test('can match regex', function (t) {
   var str =
 `HEADER
 --- abc/def
+  ---
 ATTACH
 --- ijk
 LAST
+Line
 `;
 
-  var sc = Scanner.instance(str);
-  t.ok(!sc.hasTerminated());
-  var s = sc.scanUntil(/\n---(.*)[\n$]/);
-  t.equal(s, 'HEADER\n--- abc/def\n');
-  t.equal(sc.getMatch(), '\n--- abc/def\n');
+  var sc = utils.instance(Scanner, str);
+  t.ok(sc.hasMore());
+  t.ok(!sc.finished());
+  t.ok(sc.untilLine('---'));
+  t.equal(sc.getResult(), 'HEADER\n');
+  t.equal(sc.peek(3), '---');
 
-  s = sc.scanUntil(/\n---(.*)[\n$]/);
-  t.equal(s, 'ATTACH\n--- ijk\n');
-  t.equal(sc.getMatch(), '\n--- ijk\n');
+  t.ok(sc.match(/---(.*)[\n$]/));
+  t.equal(sc.getResult(), '--- abc/def\n');
+  t.equal(sc.getMatch(1), ' abc/def');
 
-  s = sc.scanUntil(/\n---(.*)[\n$]/);
-  t.false(s);
-  t.false(sc.hasTerminated());
+  t.ok(sc.untilMatch(/\n---(.*)[\n$]/));
+  t.equal(sc.getResult(), '  ---\nATTACH');
+  t.equal(sc.getMatch(0), '\n--- ijk\n');
+  t.equal(sc.getMatch(1), ' ijk');
+  t.equal(sc.peek(4), '\n---');
 
-  s = sc.scanUntil(/$/);
-  t.equal(s, 'LAST\n');
-  t.ok(sc.hasTerminated());
+  t.ok(sc.scanMatched());
+  t.equal(sc.getResult(), '\n--- ijk\n');
+  t.equal(sc.getMatch(0), '\n--- ijk\n');
+  t.equal(sc.getMatch(1), ' ijk');
+  t.equal(sc.peek(4), 'LAST');
+
+  t.notOk(sc.untilLine('---'));
+  t.ok(sc.hasMore());
+
+  t.ok(sc.nextLine());
+  t.equal(sc.getResult(), 'LAST\n');
+
+  t.ok(sc.untilEnd());
+  t.equal(sc.getResult(), 'Line\n');
+  t.ok(sc.finished());
   t.end();
 });

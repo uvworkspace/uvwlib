@@ -11,7 +11,10 @@ name: def ijk
 `;
   var parsed = frontMatter(txt);
 
-  t.same(parsed, { id: 'abc', name: 'def ijk' });
+  t.same(parsed, [{
+    data: { id: 'abc', name: 'def ijk' },
+    texts: []
+  }]);
   t.end();
 });
 
@@ -22,10 +25,10 @@ Hello
 World
 `;
   var parsed = frontMatter(txt);
-  t.same(parsed, {
-    __content: 'Hello\nWorld\n',
-    __contents: ['Hello\nWorld\n']
-  });
+  t.same(parsed, [{
+    data: {},
+    texts: ['Hello\nWorld\n']
+  }]);
   t.end();
 });
 
@@ -38,12 +41,13 @@ Hello
 World
 `;
   var parsed = frontMatter(txt);
-  t.same(parsed, {
-    id: 'abc',
-    name: 'def',
-    __content: 'Hello\nWorld\n',
-    __contents: ['Hello\nWorld\n']
-  });
+  t.same(parsed, [{
+    data: {
+      id: 'abc',
+      name: 'def',
+    },
+    texts: ['Hello\nWorld\n']
+  }]);
   t.end();
 });
 
@@ -57,12 +61,13 @@ Hello
 World
 `;
   var parsed = frontMatter(txt);
-  t.same(parsed, {
-    id: 'abc',
-    name: 'def',
-    __content: 'Hello\n',
-    __contents: ['Hello\n', 'World\n']
-  });
+  t.same(parsed, [{
+    data: {
+      id: 'abc',
+      name: 'def',
+    },
+    texts: ['Hello\n', 'World\n']
+  }]);
   t.end();
 });
 
@@ -83,52 +88,58 @@ Hi, there.
 id: 789 
 `;
   var parsed = frontMatter(txt);
-  t.same(parsed, {
-    id: 'abc',
-    name: 'def',
-    __content: 'Hello\n',
-    __contents: ['Hello\n'],
-    __children: [{
-      name: 'xyz/www',
-      data: { id: 123, name: '456' },
-      texts: ['World\n', 'Hi, there.\n']
-    }, {
-      name: 'space betw',
-      data: { id: 789 }
-    }]
-  });
+  t.same(parsed, [{
+    data: { id: 'abc', name: 'def' },
+    texts: ['Hello\n'],
+  }, {
+    name: 'xyz/www',
+    data: { id: 123, name: '456' },
+    texts: ['World\n', 'Hi, there.\n']
+  }, {
+    name: 'space betw',
+    data: { id: 789 },
+    texts: []
+  }]);
   t.end();
 });
 
 test('can match degenerated cases', function (t) {
   var txt = '';
   var parsed = frontMatter(txt);
-  t.same(parsed, {});
+  t.same(parsed, [{
+    data: {},
+    texts: []
+  }]);
 
   txt = '---\n';
   parsed = frontMatter(txt);
-  t.same(parsed, {});
+  t.same(parsed, [{
+    data: {},
+    texts: ['']
+  }]);
 
   txt =
 `--- xyz/www
 x: y
 `;
   parsed = frontMatter(txt);
-  t.same(parsed, {
-    __children: [{
-      name: 'xyz/www',
-      data: { x: 'y'}
-    }]
-  });
+  t.same(parsed, [{
+    data: {}, texts: [],
+  }, {
+    name: 'xyz/www',
+    data: { x: 'y'},
+    texts: []
+  }]);
 
   txt = '--- xyz/www\n';
   parsed = frontMatter(txt);
-  t.same(parsed, {
-    __children: [{
-      name: 'xyz/www',
-      data: {}
-    }]
-  });
+  t.same(parsed, [{
+    data: {}, texts: []
+  }, {
+    name: 'xyz/www',
+    data: {},
+    texts: []
+  }]);
 
   txt =
 `---
@@ -137,17 +148,39 @@ x: y
 --- space betw
 `;
   parsed = frontMatter(txt);
-  t.same(parsed, {
-    __content: '\n',
-    __contents: ['\n'],
-    __children: [{
-      name: 'xyz/www',
-      data: {},
-      texts: ['\n']
-    }, {
-      name: 'space betw',
-      data: {}
-    }]
-  });
+  t.same(parsed, [{
+    data: {},
+    texts: ['']
+  }, {
+    name: 'xyz/www',
+    data: {},
+    texts: ['']
+  }, {
+    name: 'space betw',
+    data: {},
+    texts: []
+  }]);
   t.end();
 });
+
+test('can handle text with leading dashes', function (t) {
+  var txt =
+`id: abc
+name: def
+--- |
+  Hello
+  --- xyz/www
+  id: 123
+  name: "456"
+  ---
+  World
+`;
+  var parsed = frontMatter(txt);
+  t.same(parsed, [{
+    data: { id: 'abc', name: 'def' },
+    texts: ['Hello\n--- xyz/www\nid: 123\nname: "456"\n---\nWorld\n']
+  }]);
+  t.end();
+});
+
+

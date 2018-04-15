@@ -7,9 +7,9 @@ var $ = require('jquery');
 var ko = require('knockout');
 var Emitter = require('component-emitter');
 
-var uvwlib = require('../lib/utils');
+var utils = require('../lib/utils');
 
-var Komp = uvwlib.inherit(Emitter, {
+var Komp = utils.inherit(Emitter, {
 
   setTurbolinks: function (tbl) {
     Komp.Turbolinks = tbl;

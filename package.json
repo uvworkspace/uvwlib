@@ -1,6 +1,6 @@
 {
   "name": "uvwlib",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Some javascript utils",
   "main": "index.js",
   "repository": "https://github.com/uvworkspace/uvwlib",
@@ -13,7 +13,6 @@
     "tap": "^11.1.0"
   },
   "dependencies": {
-    "js-yaml": "^3.10.0",
-    "strscan": "^1.0.1"
+    "js-yaml": "^3.10.0"
   }
 }
