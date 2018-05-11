@@ -2,7 +2,7 @@
 
 var yaml = require('js-yaml');
 
-var Scanner = require('./scanner');
+var Scanner = require('../lib/scanner');
 
 function frontMatter(str) {
   var ret = [{}];

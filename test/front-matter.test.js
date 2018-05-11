@@ -2,7 +2,7 @@
 
 var test = require('tap').test;
 
-var frontMatter = require('../lib/front-matter');
+var frontMatter = require('../front/front-matter');
 
 test('can match single yaml', function (t) {
   var txt =

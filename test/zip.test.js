@@ -4,7 +4,7 @@ var test = require('tap').test;
 
 var utils = require('../lib/utils');
 var Zip = require('../lib/zip');
-var frontMatter = require('../lib/front-matter');
+var frontMatter = require('../front/front-matter');
 
 test('can zip and get JSON', function (t) {
   var zip = utils.instance(Zip);
