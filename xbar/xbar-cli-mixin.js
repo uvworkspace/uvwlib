@@ -10,15 +10,25 @@ var XbarCliMixin = {
     console.log(xbars(this).db.info());
   },
 
-  xbar_mbox: function () {
-    console.log(xbars(this).getSession());
+  xbar_login: function(args, opts) {
+    return xbars(this).login(args[0] || opts.uid, !!opts.local);
   },
+
+  xbar_logout: function(args, opts) {
+    return xbars(this).logout(!!opts.local);
+  },
+
 
   xbar_create_session: function (args, opts) {
     var sid = args[0] || opts.sid;
     if (!sid) return 'missing sid'; 
 
     return xbars(this).createSession(sid);
+  },
+
+
+  xbar_mbox: function () {
+    console.log(xbars(this).getSession());
   },
 
   xbar_join_session: function (args, opts) {
@@ -48,14 +58,6 @@ var XbarCliMixin = {
       args: args.slice(1),
       opts: opts
     });
-  },
-
-  xbar_login: function(args, opts) {
-    return xbars(this).login(args[0] || opts.uid, !!opts.local);
-  },
-
-  xbar_logout: function(args, opts) {
-    return xbars(this).logout(!!opts.local);
   },
 
   /*

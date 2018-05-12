@@ -3,9 +3,9 @@
 var path = require('path');
 var fs = require('fs');
 
-var uvwlib = require('uvwlib');
+var utils = require('../lib/utils');
 
-var FileJsonStore = uvwlib.class({
+var FileJsonStore = utils.class({
   init: function(fpath) {
     this.dbPath = fpath;
     this._json = null;
@@ -22,7 +22,7 @@ var FileJsonStore = uvwlib.class({
   },
 
   pick: function() {
-    return uvwlib.pick(this.json(), arguments);
+    return utils.pick(this.json(), arguments);
   },
 
   save: function(field, data) { 

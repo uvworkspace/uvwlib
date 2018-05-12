@@ -1,11 +1,11 @@
 'use strict';
 
-const uvwlib = require('uvwlib');
+const utils = require('../lib/utils');
 
 module.exports = function (PassportOAuth2) {
   const InternalOAuthError = PassportOAuth2.InternalOAuthError;
 
-  return uvwlib.inherit(PassportOAuth2, {
+  return utils.inherit(PassportOAuth2, {
     init: function (config, cb) {
       this.userURL = config.userURL;
       PassportOAuth2.call(this, config, cb);
